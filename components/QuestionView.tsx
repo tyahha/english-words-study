@@ -1,4 +1,4 @@
-import { KanjiQuestion } from "@/components/KanjiQuestion"
+import { Question } from "@/components/Question"
 import { useAppContext } from "@/context"
 import { clearCanvasWithHistory } from "@/logics/canvas"
 
@@ -26,7 +26,7 @@ export const QuestionView = () => {
   }
 
   return (
-    <KanjiQuestion
+    <Question
       data={questions[index]}
       onPrev={goToPrev}
       onNext={goToNext}

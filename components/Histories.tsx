@@ -1,13 +1,19 @@
 import dayjs from "dayjs"
 import { useMemo } from "react"
 import { getHistory } from "@/logics/history"
-import { Kanji } from "@/data/kanji"
+import { WordDataType } from "@/data/wordsData"
+import { useAppContext } from "@/context"
 
 type Props = {
-  kanji: Kanji
+  data: WordDataType
 }
-export const Histories = ({ kanji }: Props) => {
-  const history = useMemo(() => getHistory(kanji).sort((a, b) => b.datetime - a.datetime), [kanji])
+export const Histories = ({ data }: Props) => {
+  const { questionType } = useAppContext()
+  const history = useMemo(
+    () =>
+      getHistory(data, questionType).sort((a, b) => b.datetime - a.datetime),
+    [data, questionType],
+  )
 
   return (
     <table className="text-sm text-left text-gray-500 dark:text-gray-400">

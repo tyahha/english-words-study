@@ -1,51 +1,54 @@
-import { Kanji, KanjiDataCategories } from "@/data/kanji"
 import { useEffect, useMemo, useState } from "react"
-import { getTodayStudyCount, saveHistory, saveHistoryAtReview } from "@/logics/history"
+import {
+  getTodayStudyCount,
+  saveHistory,
+  saveHistoryAtReview,
+} from "@/logics/history"
 import { useAppContext } from "@/context"
 import { Histories } from "@/components/Histories"
 import { DrawArea } from "@/components/DrawArea"
-import { Shippori_Mincho_B1 } from "@next/font/google"
-
-const font = Shippori_Mincho_B1({ weight: "400", subsets: ["latin"] })
+import { WordDataType } from "@/data/wordsData"
 
 type Props = {
-  data: Kanji
+  data: WordDataType
   onPrev: () => void
   onNext: () => void
   onReturnTitle: () => void
 }
-export const KanjiQuestion = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
-  const { mode } = useAppContext()
+export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
+  const { mode, questionType } = useAppContext()
 
-  const [s1, s2] = data.sentence.split(data.kanji)
   const [status, setStatus] = useState<"thinking" | "result">("thinking")
   const word = useMemo(() => {
-    return status === "thinking"
-      ? data.questionType === "write"
-        ? data.kana
-        : data.kanji
-      : data.questionType === "write"
-      ? data.kanji
-      : data.kana
-  }, [status, data])
+    if (questionType === "J2E") {
+      return status === "thinking" ? data.japanese : data.english
+    } else {
+      return status === "thinking" ? data.english : data.japanese
+    }
+  }, [questionType, status, data])
 
-  const [todayStudyCount, setTodayStudyCount] = useState(getTodayStudyCount())
+  const [todayStudyCount, setTodayStudyCount] = useState(
+    getTodayStudyCount(questionType),
+  )
   useEffect(() => {
-    setTodayStudyCount(getTodayStudyCount())
-  }, [data])
+    setTodayStudyCount(getTodayStudyCount(questionType))
+  }, [questionType, data])
 
   const saveResult = (isCollect: boolean) => {
     if (mode === "review") {
-      saveHistoryAtReview(data, isCollect)
+      saveHistoryAtReview(questionType, data, isCollect)
     } else {
-      saveHistory(data, isCollect)
+      saveHistory(questionType, data, isCollect)
     }
     setStatus("thinking")
     onNext()
   }
 
   const { questions } = useAppContext()
-  const index = useMemo(() => questions.findIndex((q) => q.id === data.id), [data, questions])
+  const index = useMemo(
+    () => questions.findIndex((q) => q.id === data.id),
+    [data, questions],
+  )
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -73,19 +76,8 @@ export const KanjiQuestion = ({ data, onPrev, onNext, onReturnTitle }: Props) =>
     }
   }, [status, onPrev, onNext])
 
-  const idPrefix = useMemo(() => {
-    return data.id.split("-")[0]
-  }, [data])
-
-  const [category, categoryIndex] = useMemo(() => {
-    const index = KanjiDataCategories.findIndex((c) => c.idPrefix === idPrefix)
-    return [KanjiDataCategories[index], index]
-  }, [idPrefix])
-
   return (
-    <main
-      className={`flex justify-center  ${categoryIndex % 2 === 0 ? "bg-blue-100" : "bg-red-100"}`}
-    >
+    <main className={`flex justify-center bg-green-100`}>
       <section className="w-11/12 text-center">
         <div className="mt-4 flex gap-8 justify-center">
           <button
@@ -113,10 +105,9 @@ export const KanjiQuestion = ({ data, onPrev, onNext, onReturnTitle }: Props) =>
             次に進む＞＞＞
           </button>
         </div>
-        <p className="text-5xl text-center mt-4">
-          {category.idPrefix}. {category.title}
+        <p className="text-xl text-center mt-4">
+          今日勉強した漢字数：{todayStudyCount}
         </p>
-        <p className="text-xl text-center mt-4">今日勉強した漢字数：{todayStudyCount}</p>
         <h2 className="text-center text-6xl my-4">
           問題{data.id}({index + 1}/{questions.length})
         </h2>
@@ -151,16 +142,14 @@ export const KanjiQuestion = ({ data, onPrev, onNext, onReturnTitle }: Props) =>
             答えを見る
           </button>
         </div>
-        <p className={`bg-gray-100 text-center py-16 my-4 ${font.className}`}>
-          <span className="text-6xl">{s1} </span>
-          <span className="font-bold underline text-6xl underline-offset-[8px]">{word}</span>
-          <span className="text-6xl"> {s2}</span>
+        <p className={`bg-gray-100 text-center py-16 my-4`}>
+          <span className="text-6xl">{word}</span>
         </p>
         <div className="flex justify-center mt-4 bg-white">
           <DrawArea />
         </div>
         <div className="relative overflow-x-auto shadow-md mt-8 w-fit m-auto min-w-8">
-          <Histories kanji={data} />
+          <Histories data={data} />
         </div>
       </section>
     </main>

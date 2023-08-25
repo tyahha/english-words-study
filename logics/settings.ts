@@ -1,16 +1,14 @@
 export type AppSettings = {
   isOnlyWrongs: boolean
   enableWrongsCount: number
-  selectedCategoryIdPrefix: string
 }
 
 export const defaultAppSettings: AppSettings = {
   isOnlyWrongs: false,
   enableWrongsCount: 1,
-  selectedCategoryIdPrefix: "1",
 }
 
-const key = "kanji-study-settings"
+const key = "english-study-settings"
 
 export const saveSettings = (settings: AppSettings) => {
   localStorage.setItem(key, JSON.stringify(settings))
