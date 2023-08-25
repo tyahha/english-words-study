@@ -106,7 +106,6 @@ export const TitleView = () => {
     const id = loadLastAnsweredId(questionType) || WordsData[0].id
     const foundIndex = WordsData.findIndex((k) => k.id === id)
     const continueIndex = foundIndex == null ? 0 : foundIndex + 1
-    console.log("continueIndex", continueIndex)
     setState({
       indexForContinue: WordsData.length <= continueIndex ? 0 : continueIndex,
       recentWrongs: pickRecentWrongs(dayjs(), questionType),
