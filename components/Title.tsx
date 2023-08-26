@@ -231,7 +231,7 @@ export const TitleView = () => {
           選んで始める
         </button>
         <input
-          className={"text-center"}
+          className={"text-center text-2xl"}
           value={questionNumber}
           type={"number"}
           min={1}
@@ -242,7 +242,7 @@ export const TitleView = () => {
             setQuestionNumber(n)
           }}
         />
-        <div className={"align-text-bottom"}>番目</div>
+        <div className={"text-2xl text-center py-4"}>番目</div>
       </div>
       <h2 className="text-center mt-12 text-4xl">復習</h2>
       <div className="flex justify-center gap-1 mt-4">
