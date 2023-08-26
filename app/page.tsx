@@ -28,7 +28,13 @@ export default function Home() {
         setQuestionType,
       }}
     >
-      {mode === "title" ? <TitleView /> : <QuestionView />}
+      <div
+        className={`${
+          questionType === "J2E" ? "bg-green-100" : "bg-amber-100"
+        }`}
+      >
+        {mode === "title" ? <TitleView /> : <QuestionView />}
+      </div>
     </AppContext.Provider>
   )
 }

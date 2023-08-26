@@ -135,8 +135,8 @@ export const TitleView = () => {
   return (
     <main className="mt-16">
       <h1 className="text-9xl text-center">英語の勉強</h1>
-      <div className="flex justify-center gap-4 text-4xl">
-        <div>
+      <div className="flex justify-center gap-4 text-4xl mt-4">
+        <div className={`${questionType === "J2E" && "underline"}`}>
           <input
             id="J2E"
             type="radio"
@@ -145,7 +145,7 @@ export const TitleView = () => {
           />
           <label htmlFor="J2E">日本語⇒英語</label>
         </div>
-        <div>
+        <div className={`${questionType === "E2J" && "underline"}`}>
           <input
             id="E2J"
             type="radio"
@@ -156,7 +156,7 @@ export const TitleView = () => {
         </div>
       </div>
       <h2 className="text-center mt-12 text-4xl">毎日の学習</h2>
-      <div className={"flex justify-center text-2xl gap-8"}>
+      <div className={"flex justify-center text-2xl gap-8 mt-2"}>
         <h2>本日勉強した数(日本語⇒英語)：{todayStudyCount.J2E}</h2>
         <h2>本日勉強した数(英語⇒日本語)：{todayStudyCount.E2J}</h2>
       </div>

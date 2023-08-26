@@ -77,7 +77,7 @@ export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
   }, [status, onPrev, onNext])
 
   return (
-    <main className={`flex justify-center bg-green-100`}>
+    <main className={`flex justify-center`}>
       <section className="w-11/12 text-center">
         <div className="mt-4 flex gap-8 justify-center">
           <button
