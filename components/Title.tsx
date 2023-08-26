@@ -140,7 +140,7 @@ export const TitleView = () => {
           <input
             id="J2E"
             type="radio"
-            onClick={() => setQuestionType("J2E")}
+            onChange={() => setQuestionType("J2E")}
             checked={questionType === "J2E"}
           />
           <label htmlFor="J2E">日本語⇒英語</label>
@@ -149,7 +149,7 @@ export const TitleView = () => {
           <input
             id="E2J"
             type="radio"
-            onClick={() => setQuestionType("E2J")}
+            onChange={() => setQuestionType("E2J")}
             checked={questionType === "E2J"}
           />
           <label htmlFor="E2J">英語⇒日本語</label>
