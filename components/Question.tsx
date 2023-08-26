@@ -142,7 +142,17 @@ export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
             答えを見る
           </button>
         </div>
-        <p className={`bg-gray-100 text-center py-16 my-4`}>
+        <button
+          className="mt-8 px-8 py-4 rounded bg-gray-300 text-red-700 text-4xl"
+          onClick={() => {
+            const c = new SpeechSynthesisUtterance(data.english)
+            c.lang = "en-US"
+            speechSynthesis.speak(c)
+          }}
+        >
+          英語の発音
+        </button>
+        <p className={`bg-gray-100 text-center py-10 my-4 relative`}>
           <span className="text-6xl">{word}</span>
         </p>
         <div className="flex justify-center mt-4 bg-white">
