@@ -20,7 +20,9 @@ export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
 
   const [status, setStatus] = useState<"thinking" | "result">("thinking")
   const word = useMemo(() => {
-    if (questionType === "J2E") {
+    if (questionType === "listening") {
+      return status === "thinking" ? "" : `${data.english}(${data.japanese})`
+    } else if (questionType === "J2E") {
       return status === "thinking" ? data.japanese : data.english
     } else {
       return status === "thinking" ? data.english : data.japanese

@@ -17,6 +17,10 @@ const keys: Record<QuestionType, Keys> = <const>{
     answerHistory: "english-study-history-e2j",
     lastAnswer: "english-study-last-answer-e2j",
   },
+  listening: {
+    answerHistory: "english-study-history-listening",
+    lastAnswer: "english-study-last-answer-listening",
+  },
 }
 
 type CorrectHistory = {
@@ -63,6 +67,7 @@ export const loadHistories = (): CorrectHistoriesByQuestionType => {
   histories = {
     J2E: load("J2E"),
     E2J: load("E2J"),
+    listening: load("listening"),
   }
   return histories
 }
@@ -99,4 +104,5 @@ export const getTodayStudyCountByType = (
 export const getTodayStudyCount = (): Record<QuestionType, number> => ({
   J2E: getTodayStudyCountByType("J2E"),
   E2J: getTodayStudyCountByType("E2J"),
+  listening: getTodayStudyCountByType("listening"),
 })

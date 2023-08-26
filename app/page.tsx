@@ -30,7 +30,11 @@ export default function Home() {
     >
       <div
         className={`min-h-screen ${
-          questionType === "J2E" ? "bg-green-100" : "bg-amber-100"
+          questionType === "listening"
+            ? "bg-blue-100"
+            : questionType === "J2E"
+            ? "bg-green-100"
+            : "bg-amber-100"
         }`}
       >
         {mode === "title" ? <TitleView /> : <QuestionView />}

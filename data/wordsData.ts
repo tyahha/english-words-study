@@ -4,7 +4,7 @@ export type WordDataType = {
   english: string
 }
 
-export type QuestionType = "J2E" | "E2J"
+export type QuestionType = "J2E" | "E2J" | "listening"
 
 export const WordsData: WordDataType[] = [
   { id: "M-1", japanese: "…を買う", english: "buy" },

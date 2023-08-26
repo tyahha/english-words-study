@@ -104,6 +104,7 @@ export const TitleView = () => {
     todayStudyCount: {
       J2E: 0,
       E2J: 0,
+      listening: 0,
     },
   })
   useEffect(() => {
@@ -156,11 +157,23 @@ export const TitleView = () => {
           />
           <label htmlFor="E2J">英語⇒日本語</label>
         </div>
+        <div className={`${questionType === "E2J" && "underline"}`}>
+          <input
+            id="E2J"
+            type="radio"
+            onChange={() => setQuestionType("listening")}
+            checked={questionType === "listening"}
+            className={"w-8 h-8 relative top-1"}
+          />
+          <label htmlFor="E2J">リスニング</label>
+        </div>
       </div>
       <h2 className="text-center mt-12 text-4xl">毎日の学習</h2>
-      <div className={"flex justify-center text-2xl gap-8 mt-2"}>
-        <h2>本日勉強した数(日本語⇒英語)：{todayStudyCount.J2E}</h2>
-        <h2>本日勉強した数(英語⇒日本語)：{todayStudyCount.E2J}</h2>
+      <h2 className={"text-center text-3xl mt-3"}>本日勉強した数</h2>
+      <div className={"text-center text-2xl gap-8 mt-2"}>
+        <h3>日本語⇒英語：{todayStudyCount.J2E}</h3>
+        <h3>英語⇒日本語：{todayStudyCount.E2J}</h3>
+        <h3>英語⇒日本語：{todayStudyCount.listening}</h3>
       </div>
       <div className="text-center mt-4 text-xl">
         <span className="p-2 bg-blue-300">
