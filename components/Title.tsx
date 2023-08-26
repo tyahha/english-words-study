@@ -142,6 +142,7 @@ export const TitleView = () => {
             type="radio"
             onChange={() => setQuestionType("J2E")}
             checked={questionType === "J2E"}
+            className={"w-8 h-8 relative top-1"}
           />
           <label htmlFor="J2E">日本語⇒英語</label>
         </div>
@@ -151,6 +152,7 @@ export const TitleView = () => {
             type="radio"
             onChange={() => setQuestionType("E2J")}
             checked={questionType === "E2J"}
+            className={"w-8 h-8 relative top-1"}
           />
           <label htmlFor="E2J">英語⇒日本語</label>
         </div>
@@ -163,7 +165,7 @@ export const TitleView = () => {
       <div className="text-center mt-4 text-xl">
         <span className="p-2 bg-blue-300">
           <input
-            className="mr-2"
+            className="mr-2 h-8 w-8 relative top-2"
             id="isOnlyWrongs"
             type="checkbox"
             checked={isOnlyWrongs}
