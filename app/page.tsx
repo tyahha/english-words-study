@@ -29,7 +29,7 @@ export default function Home() {
       }}
     >
       <div
-        className={`${
+        className={`min-h-screen ${
           questionType === "J2E" ? "bg-green-100" : "bg-amber-100"
         }`}
       >

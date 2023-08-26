@@ -133,7 +133,7 @@ export const TitleView = () => {
   const [questionNumber, setQuestionNumber] = useState(1)
 
   return (
-    <main className="mt-16">
+    <main className="pt-16">
       <h1 className="text-9xl text-center">英語の勉強</h1>
       <div className="flex justify-center gap-4 text-4xl mt-4">
         <div className={`${questionType === "J2E" && "underline"}`}>
