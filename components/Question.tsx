@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import {
-  getTodayStudyCount,
+  getTodayStudyCountByType,
   saveHistory,
   saveHistoryAtReview,
 } from "@/logics/history"
@@ -28,10 +28,10 @@ export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
   }, [questionType, status, data])
 
   const [todayStudyCount, setTodayStudyCount] = useState(
-    getTodayStudyCount(questionType),
+    getTodayStudyCountByType(questionType),
   )
   useEffect(() => {
-    setTodayStudyCount(getTodayStudyCount(questionType))
+    setTodayStudyCount(getTodayStudyCountByType(questionType))
   }, [questionType, data])
 
   const saveResult = (isCollect: boolean) => {
@@ -106,7 +106,7 @@ export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
           </button>
         </div>
         <p className="text-xl text-center mt-4">
-          今日勉強した漢字数：{todayStudyCount}
+          今日勉強した数：{todayStudyCount}
         </p>
         <h2 className="text-center text-6xl my-4">
           問題{data.id}({index + 1}/{questions.length})

@@ -2,7 +2,7 @@ import { useAppContext } from "@/context"
 import { useEffect, useMemo, useState } from "react"
 import {
   getTodayStudyCount,
-  loadHistories,
+  loadHistoriesByType,
   loadLastAnsweredId,
 } from "@/logics/history"
 import dayjs from "dayjs"
@@ -14,7 +14,7 @@ import {
 import { QuestionType, WordDataType, WordsData } from "@/data/wordsData"
 
 const pickWrongs = (day: dayjs.Dayjs, questionType: QuestionType) => {
-  const histories = loadHistories(questionType)
+  const histories = loadHistoriesByType(questionType)
   const ret: WordDataType[] = []
   const baseDay = day.format("YYYYMMDD")
   Object.entries(histories).forEach(([id, history]) => {
@@ -32,7 +32,7 @@ const pickWrongs = (day: dayjs.Dayjs, questionType: QuestionType) => {
 }
 
 const pickRecentWrongs = (day: dayjs.Dayjs, questionType: QuestionType) => {
-  const histories = loadHistories(questionType)
+  const histories = loadHistoriesByType(questionType)
   const ret: WordDataType[] = []
   const baseDay = day.format("YYYYMMDD")
   Object.entries(histories).forEach(([id, history]) => {
@@ -52,6 +52,7 @@ const pickRecentWrongs = (day: dayjs.Dayjs, questionType: QuestionType) => {
 export const TitleView = () => {
   const { setMode, setQuestions, setIndex, questionType, setQuestionType } =
     useAppContext()
+
   const [{ isOnlyWrongs, enableWrongsCount }, setSettings] =
     useState(defaultAppSettings)
   useEffect(() => {
@@ -93,14 +94,17 @@ export const TitleView = () => {
     todayWrongs: WordDataType[]
     yesterdayWrongs: WordDataType[]
     twoDaysAgoWrongs: WordDataType[]
-    todayStudyCount: number
+    todayStudyCount: Record<QuestionType, number>
   }>({
     indexForContinue: 0,
     recentWrongs: [],
     todayWrongs: [],
     yesterdayWrongs: [],
     twoDaysAgoWrongs: [],
-    todayStudyCount: 0,
+    todayStudyCount: {
+      J2E: 0,
+      E2J: 0,
+    },
   })
   useEffect(() => {
     const id = loadLastAnsweredId(questionType) || WordsData[0].id
@@ -112,14 +116,14 @@ export const TitleView = () => {
       todayWrongs: pickWrongs(dayjs(), questionType),
       yesterdayWrongs: pickWrongs(dayjs().subtract(1, "day"), questionType),
       twoDaysAgoWrongs: pickWrongs(dayjs().subtract(2, "day"), questionType),
-      todayStudyCount: getTodayStudyCount(questionType),
+      todayStudyCount: getTodayStudyCount(),
     })
   }, [questionType])
   const filteredWordsData = useMemo(() => {
     if (!isOnlyWrongs) return WordsData
 
     return WordsData.filter((k) => {
-      const history = loadHistories(questionType)
+      const history = loadHistoriesByType(questionType)
       const h = history[k.id]
       if (!h) return false
 
@@ -151,9 +155,11 @@ export const TitleView = () => {
           <label htmlFor="E2J">英語⇒日本語</label>
         </div>
       </div>
-      <h2 className="text-center mt-12 text-4xl">
-        毎日の学習(本日勉強した数：{todayStudyCount})
-      </h2>
+      <h2 className="text-center mt-12 text-4xl">毎日の学習</h2>
+      <div className={"flex justify-center text-2xl gap-8"}>
+        <h2>本日勉強した数(日本語⇒英語)：{todayStudyCount.J2E}</h2>
+        <h2>本日勉強した数(英語⇒日本語)：{todayStudyCount.E2J}</h2>
+      </div>
       <div className="text-center mt-4 text-xl">
         <span className="p-2 bg-blue-300">
           <input

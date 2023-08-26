@@ -26,6 +26,7 @@ type CorrectHistory = {
 
 type CorrectHistories = Record<string, CorrectHistory[]>
 
+type CorrectHistoriesByQuestionType = Record<QuestionType, CorrectHistories>
 export const saveHistory = (
   questionType: QuestionType,
   data: WordDataType,
@@ -40,7 +41,7 @@ export const saveHistoryAtReview = (
   data: WordDataType,
   isCorrect: boolean,
 ) => {
-  const histories = loadHistories(questionType)
+  const histories = loadHistories()[questionType]
   const history = histories[data.id] || []
   history.push({ isCorrect, datetime: Date.now() })
   histories[data.id] = history
@@ -50,20 +51,30 @@ export const saveHistoryAtReview = (
   )
 }
 
-let histories: CorrectHistories | undefined
-export const loadHistories = (questionType: QuestionType): CorrectHistories => {
+let histories: CorrectHistoriesByQuestionType | undefined
+export const loadHistories = (): CorrectHistoriesByQuestionType => {
   if (histories) return histories
 
-  const str = localStorage.getItem(keys[questionType].answerHistory)
-  histories = (str ? JSON.parse(str) : {}) as CorrectHistories
+  const load = (questionType: QuestionType) => {
+    const str = localStorage.getItem(keys[questionType].answerHistory)
+    return (str ? JSON.parse(str) : {}) as CorrectHistories
+  }
+
+  histories = {
+    J2E: load("J2E"),
+    E2J: load("E2J"),
+  }
   return histories
 }
+export const loadHistoriesByType = (
+  questionType: QuestionType,
+): CorrectHistories => loadHistories()[questionType]
 
 export const getHistory = (
   data: WordDataType,
   questionType: QuestionType,
 ): CorrectHistory[] => {
-  const current = loadHistories(questionType)
+  const current = loadHistoriesByType(questionType)
   return current[data.id] || []
 }
 
@@ -73,12 +84,19 @@ export const loadLastAnsweredId = (
   return localStorage.getItem(keys[questionType].lastAnswer)
 }
 
-export const getTodayStudyCount = (questionType: QuestionType): number => {
+export const getTodayStudyCountByType = (
+  questionType: QuestionType,
+): number => {
   const today = dayjs().format("YYYYMMDD")
-  return Object.values(loadHistories(questionType)).reduce((p, h) => {
+  return Object.values(loadHistoriesByType(questionType)).reduce((p, h) => {
     return (
       p +
       (h.find((h) => dayjs(h.datetime).format("YYYYMMDD") === today) ? 1 : 0)
     )
   }, 0)
 }
+
+export const getTodayStudyCount = (): Record<QuestionType, number> => ({
+  J2E: getTodayStudyCountByType("J2E"),
+  E2J: getTodayStudyCountByType("E2J"),
+})
