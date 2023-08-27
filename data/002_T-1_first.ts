@@ -1,7 +1,7 @@
 import { WordDataType } from "@/data/wordsData"
 
 export const FirstWordsData: WordDataType[] = [
-  { id: "T_1_1", english: "friendly", japanese: "友達" },
+  { id: "T_1_1", english: "friendly", japanese: "友好的な" },
   { id: "T_1_2", english: "the U.S.", japanese: "アメリカ合衆国" },
   { id: "T_1_3", english: "New Zealand", japanese: "ニュージーランド" },
   { id: "T_1_4", english: "Carol", japanese: "キャロル（人名）" },
