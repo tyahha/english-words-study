@@ -19,15 +19,6 @@ export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
   const { mode, questionType } = useAppContext()
 
   const [status, setStatus] = useState<"thinking" | "result">("thinking")
-  const word = useMemo(() => {
-    if (questionType === "listening") {
-      return status === "thinking" ? "" : `${data.english}(${data.japanese})`
-    } else if (questionType === "J2E") {
-      return status === "thinking" ? data.japanese : data.english
-    } else {
-      return status === "thinking" ? data.english : data.japanese
-    }
-  }, [questionType, status, data])
 
   const [todayStudyCount, setTodayStudyCount] = useState(
     getTodayStudyCountByType(questionType),
@@ -154,9 +145,24 @@ export const Question = ({ data, onPrev, onNext, onReturnTitle }: Props) => {
         >
           英語の発音
         </button>
-        <p className={`bg-gray-100 text-center py-10 my-4 relative`}>
-          <span className="text-6xl">{word}</span>
-        </p>
+        <div className={`bg-gray-100 text-center py-10 my-4 relative`}>
+          <p
+            className={`text-6xl  ${questionType === "J2E" && "text-red-600"}`}
+          >
+            {questionType !== "E2J" && status === "thinking"
+              ? "\u200b"
+              : data.english}
+          </p>
+          <p
+            className={`text-6xl mt-2 ${
+              questionType === "E2J" && "text-red-600"
+            }`}
+          >
+            {questionType !== "J2E" && status === "thinking"
+              ? "\u200b"
+              : data.japanese}
+          </p>
+        </div>
         <div className="flex justify-center mt-4 bg-white">
           <DrawArea />
         </div>
