@@ -167,15 +167,15 @@ export const TitleView = () => {
           />
           <label htmlFor="E2J">英語⇒日本語</label>
         </div>
-        <div className={`${questionType === "E2J" && "underline"}`}>
+        <div className={`${questionType === "listening" && "underline"}`}>
           <input
-            id="E2J"
+            id="listening"
             type="radio"
             onChange={() => setQuestionType("listening")}
             checked={questionType === "listening"}
             className={"w-8 h-8 relative top-1"}
           />
-          <label htmlFor="E2J">リスニング</label>
+          <label htmlFor="listening">リスニング</label>
         </div>
       </div>
       <h2 className="text-center mt-12 text-4xl">毎日の学習</h2>
