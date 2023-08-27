@@ -49,6 +49,12 @@ const pickRecentWrongs = (day: dayjs.Dayjs, questionType: QuestionType) => {
   return ret
 }
 
+const pickNoStudy = (questionType: QuestionType) => {
+  const histories = loadHistoriesByType(questionType)
+  const ids = Object.keys(histories)
+  return WordsData.filter((d) => !ids.includes(d.id))
+}
+
 export const TitleView = () => {
   const { setMode, setQuestions, setIndex, questionType, setQuestionType } =
     useAppContext()
@@ -84,6 +90,7 @@ export const TitleView = () => {
       recentWrongs,
       todayWrongs,
       yesterdayWrongs,
+      noStudies,
       twoDaysAgoWrongs,
       todayStudyCount,
     },
@@ -93,12 +100,14 @@ export const TitleView = () => {
     recentWrongs: WordDataType[]
     todayWrongs: WordDataType[]
     yesterdayWrongs: WordDataType[]
+    noStudies: WordDataType[]
     twoDaysAgoWrongs: WordDataType[]
     todayStudyCount: Record<QuestionType, number>
   }>({
     indexForContinue: 0,
     recentWrongs: [],
     todayWrongs: [],
+    noStudies: [],
     yesterdayWrongs: [],
     twoDaysAgoWrongs: [],
     todayStudyCount: {
@@ -115,6 +124,7 @@ export const TitleView = () => {
       indexForContinue: WordsData.length <= continueIndex ? 0 : continueIndex,
       recentWrongs: pickRecentWrongs(dayjs(), questionType),
       todayWrongs: pickWrongs(dayjs(), questionType),
+      noStudies: pickNoStudy(questionType),
       yesterdayWrongs: pickWrongs(dayjs().subtract(1, "day"), questionType),
       twoDaysAgoWrongs: pickWrongs(dayjs().subtract(2, "day"), questionType),
       todayStudyCount: getTodayStudyCount(),
@@ -205,7 +215,7 @@ export const TitleView = () => {
             setMode("question")
           }}
           disabled={filteredWordsData.length <= 0}
-          className={`bg-blue-500 text-white font-bold py-4 rounded text-2xl w-1/4 ${
+          className={`bg-blue-500 text-white font-bold py-4 rounded text-2xl w-1/6 ${
             filteredWordsData.length <= 0 ? "opacity-50" : "hover:bg-blue-700"
           }`}
         >
@@ -217,14 +227,35 @@ export const TitleView = () => {
             setIndex(indexForContinue)
             setMode("question")
           }}
-          disabled={indexForContinue === 0 || filteredWordsData.length <= 0}
-          className={`bg-green-500 text-white font-bold py-4 rounded text-2xl w-1/4 ${
-            indexForContinue === 0 || filteredWordsData.length <= 0
+          disabled={
+            indexForContinue === 0 ||
+            isOnlyWrongs ||
+            filteredWordsData.length <= 0
+          }
+          className={`bg-green-500 text-white font-bold py-4 rounded text-2xl w-1/6 ${
+            indexForContinue === 0 ||
+            isOnlyWrongs ||
+            filteredWordsData.length <= 0
               ? "opacity-50"
               : "hover:bg-green-700"
           }`}
         >
           続きから
+        </button>
+        <button
+          onClick={() => {
+            setQuestions(noStudies)
+            setIndex(0)
+            setMode("question")
+          }}
+          disabled={isOnlyWrongs || noStudies.length <= 0}
+          className={`bg-green-500 text-white font-bold py-4 rounded text-2xl w-1/6 ${
+            isOnlyWrongs || noStudies.length <= 0
+              ? "opacity-50"
+              : "hover:bg-green-700"
+          }`}
+        >
+          未学習のみ
         </button>
       </div>
       <div className="flex justify-center gap-1 mt-4">
