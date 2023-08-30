@@ -3,25 +3,33 @@ import { Canvas } from "fabric"
 import { clearCanvas, redoCanvas, setCanvas, undoCanvas } from "@/logics/canvas"
 
 export const DrawArea = () => {
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     if (!canvasRef.current) return
 
-    setCanvas(
-      new Canvas(canvasRef.current, {
-        isDrawingMode: true,
-        width: window.innerWidth - 176,
-        height: 200,
-      }),
-    )
+    const canvas = new Canvas(canvasRef.current, {
+      isDrawingMode: true,
+      width: wrapperRef.current?.clientWidth || 0,
+      height: 200,
+    })
+    setCanvas(canvas)
+
+    if (!wrapperRef.current) return
+    const resizeObserver = new ResizeObserver(() => {
+      canvas.setWidth(wrapperRef.current?.clientWidth || window.innerWidth)
+    })
+    resizeObserver.observe(wrapperRef.current)
+
     return () => {
+      resizeObserver.disconnect()
       clearCanvas()
     }
   }, [])
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={wrapperRef}>
       <canvas ref={canvasRef} />
       <div className="flex gap-2 absolute top-2 right-2">
         <button
