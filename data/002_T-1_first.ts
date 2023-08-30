@@ -82,7 +82,7 @@ export const FirstWordsData: WordDataType[] = [
   { id: "T_1_75", english: "write", japanese: "書く" },
   { id: "T_1_76", english: "that's", japanese: "that is の短縮形" },
   { id: "T_1_77", english: "then", japanese: "それから、次に、その時" },
-  { id: "T_1_78", english: "roll", japanese: "役、役割" },
+  { id: "T_1_78", english: "role", japanese: "役、役割" },
   { id: "T_1_79", english: "ski", japanese: "スキー" },
   { id: "T_1_80", english: "Chinese", japanese: "中国人" },
   { id: "T_1_81", english: "kilometer", japanese: "キロメートル" },
